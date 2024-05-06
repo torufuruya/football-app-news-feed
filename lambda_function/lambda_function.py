@@ -28,7 +28,8 @@ def lambda_handler(event, context):
             'id': str(hash(title)),  # タイトルからハッシュを生成してIDとして使用
             'title': title,
             'image': img,
-            'link': f"https://www.goal.com{link}"
+            'link': f"https://www.goal.com{link}",
+            'source': 'goal.com'
         })
 
         # DynamoDBに保存
