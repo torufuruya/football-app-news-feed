@@ -9,11 +9,21 @@ from datetime import datetime
 # table = dynamodb.Table('news')
 
 # Goal.com ニュースページのURL
-# URL = "https://www.goal.com/jp/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9"
-URL = "https://www.goal.com/en/news"
+URL_en = "https://www.goal.com/en/news"
+URL_es = "https://www.goal.com/es/noticias"
+URL_jp = "https://www.goal.com/jp/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9"
 
 def lambda_handler(event, context):
-    response = requests.get(URL)
+    query_params = event.get('queryStringParameters', {})
+    lang = query_params.get('lang')
+
+    source = URL_en
+    if lang == 'es':
+        source = URL_es
+    elif lang == 'ja':
+        source = URL_jp
+
+    response = requests.get(source)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     articles = soup.find_all('article')
