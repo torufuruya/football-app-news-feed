@@ -1,41 +1,21 @@
-# Python
+# Matchday App News Feed
 
-Python by default will attempt to install your packages globally, or in the Nix Store (which it does not have permissions to modify). To use Python with Devbox, we recommend setting up a Virtual Environment using pipenv or Poetry (see below).
+This repository is the source code of the AWS Lambda for the news feature in the Matchday app.
 
-[**Example Repo**](https://github.com/jetify-com/devbox/tree/main/examples/development/python)
+## Basic
 
-## Adding Python to your Project
+This repository was created with [devbox](https://www.jetify.com/devbox/docs/). Go to their document for more information.
 
-`devbox add python@3.10`, or in your `devbox.json` add:
+## Deploy
 
-```json
-  "packages": [
-    "python@3.10"
-  ],
-```
+1. Remove `lambda_function.zip` if it already exists
+2. Edit the Lambda function in `lambda_function/lambda_function.py`
+3. `cd lamda_function &&  zip -r ../lambda_function.zip .`
+4. Go to the [AWS console](https://ap-northeast-1.console.aws.amazon.com/lambda/home?region=ap-northeast-1#/functions/scrapingGoalcom?tab=code) and upload the zip file from the upload button on the upper-right of the code editor.
 
-This will install Python 3.10 in your shell. You can find other versions of Python by running `devbox search python`. You can also view the available versions on [Nixhub](https://www.nixhub.io/packages/python)
 
-## Installing Packages with Pip
+## Notes
 
-[**Example Repo**](https://github.com/jetify-com/devbox/tree/main/examples/development/python/pip)
-
-[![Open In Devbox.sh](https://www.jetify.com/img/devbox/open-in-devbox.svg)](https://devbox.sh/open/templates/python-pip)
-
-[pip](https://pip.pypa.io/en/stable/) is the standard package manager for Python. Since it installs python packages globally, we strongly recommend using a virtual environment.
-
-You can install `pip` by running `devbox add python3xxPackages.pip`, where `3xx` is the version of Python you want to install. This will also install the pip plugin for Devbox, which automatically creates a virtual environment for installing your packages locally
-
-Your virtual environment is created in the `.devbox/virtenv/pip` directory by default, and can be activated by running `. $VENV_DIR/bin/activate` in your devbox shell. You can activate the virtual environment automatically using the init_hook of your `devbox.json`:
-
-```json
-{
-    "packages": [
-        "python310",
-        "python310Packages.pip"
-    ],
-    "shell": {
-        "init_hook": ". $VENV_DIR/bin/activate"
-    }
-}
-```
+* We have bunch of Lambda functions for Matchday app but we only have this approach for this because it uses BeautifulSoup package to croll the external website.
+* Zip file is large enough so we cannot see/edit the code in AWS console.
+* There must be a better approach to managing AWS Lambda in code. Please migrate to that in the future.
